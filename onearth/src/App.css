@@ -1,0 +1,103 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body,
+html {
+  height: 100%;
+}
+
+body {
+  overflow: hidden;
+}
+
+#root,
+.rootApp {
+  height: 100%;
+}
+
+a {
+  color: #868fa0;
+  cursor: pointer;
+}
+
+.rootVerticalApp {
+  height: 100%;
+}
+.horizontalWrap {
+  height: 100vh;
+  overflow: auto;
+  position: relative;
+  display: flex;
+  overflow: hidden;
+}
+
+.horizontalWrap > * {
+  float: left;
+  height: 100%;
+}
+.verticalWrap {
+  height: 100%;
+  background: #868fa0;
+  position: relative;
+}
+.verticalWrap > * {
+  flex: 1;
+}
+
+.imageSlides {
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: #868fa0;
+  text-align: center;
+  background-repeat: no-repeat;
+  background-position: right;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-origin: content-box;
+}
+
+.imageSlides img {
+  cursor: pointer;
+  opacity: 0.7;
+  margin: 5px;
+  border: 3px solid transparent;
+  box-sizing: border-box;
+}
+.imageSlides img:hover,
+.imageSlides img.active {
+  opacity: 1;
+  border-color: #fff;
+}
+
+.color-well {
+  display: none;
+}
+
+#map {
+  z-index: 0; /* this allows layersPopup to go in front of map */
+  height: 100%;
+  width: 100%;
+}
+
+.visible.transition {
+  display: flex !important;
+  visibility: visible !important;
+}
+
+button {
+  height: 26px;
+  color: black;
+  background-color: white;
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
+  padding-top: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-bottom: 3px;
+  border: 1px solid #666;
+  border-radius: 4px;
+  white-space: nowrap;
+}
