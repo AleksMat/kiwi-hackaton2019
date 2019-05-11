@@ -69,7 +69,6 @@ class DescriptionProvider(Resource):
         """ Obtain info about a location
         """
         payload = get_destiantion_info(int(location_id))
-
         print(payload)
         return payload, 200
 

@@ -9,22 +9,21 @@ def read_destinations():
 
         next(tsvfile)
         for idx, line in enumerate(tsvfile):
+
             if len(line) < 10:
                 continue
             try:
-                line = line.decode("utf-8").replace("\r\n", "").split('\t')
+                line = line.decode("utf-8").replace("\r\n", "").strip().split('\t')
                 name = line[0]
                 coordinates = line[1].split(",")
-                gif_url = line[2]
-                images = line[3:-1]
+
                 description = line[-1]
                 dest.append({
                     'name': name,
                     'id': idx,
                     'lng': float(coordinates[0]),
                     'lat': float(coordinates[1]),
-                    'gif': gif_url,
-                    'images': images,
+                    'urls': line[2: -1],
                     'description': description
                 })
                 if idx < 5:
@@ -63,7 +62,7 @@ def get_destiantion_info(id):
     return {
         **destinations[id],
         # 'price': get_flight_price(lat, lng),
-        # 'airport': get_closest_airport(lat, lng)
+        'airport': get_closest_airport(lat, lng)
     }
 
 
@@ -94,20 +93,30 @@ def get_flight_price(lat=0, lon=0):
             return response.json()["data"][0]["price"]
     return 999
 
+
 def get_closest_airport(lat, lon, single_location=True):
-    parameters = {
-        "lat": lat, "lon": lon,
-        "location_types": "airport"
-    }
-    response = requests.get(
-        locations_url,
-        params=parameters,
-        headers=headers,
-    )
-    if single_location:
-        return response.json()["locations"][0]["id"]
-    else:
-        return response.json()["locations"]
+    radius = 250
+
+    while radius < 10 ** 4:
+        parameters = {
+            "lat": lat, "lon": lon,
+            "location_types": "airport",
+            "radius": radius
+        }
+        locations = requests.get(
+            locations_url,
+            params=parameters,
+            headers=headers,
+        ).json()["locations"]
+
+        if locations:
+            if single_location:
+                return locations[0]["id"]
+            else:
+                return locations
+        radius *= 2
+
+    raise ValueError('Something does not work')
 
 
 destinations = read_destinations()

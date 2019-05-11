@@ -9,7 +9,7 @@ class UiStore {
 
   constructor() {
     this.locationSelected = false;
-    
+
     this.initStore();
 
     this.backendService = new axios.create({
@@ -25,9 +25,10 @@ class UiStore {
     this.state = {
       zoomLevel: null,
       locationInfo: {
-        name: 'Test destination',
-        description: 'Something about destination',
-        price: '5 $'
+        name: null,
+        description: null,
+        airport: null,
+        urls: []
       },
       locations: [{lat: 45, lng: 13, id: 1}, {lat: 30, lng: 23, id: 2}],
       
@@ -49,12 +50,10 @@ class UiStore {
 
 
   async selectLocation(id) {
-    console.log('wtf?')
     let { data } = await this.backendService.get(`/locations/${id}`);
 
     this.state.locationInfo = data
     this.locationSelected = true;
-    console.log(this.locationSelected)
   }
 
 }

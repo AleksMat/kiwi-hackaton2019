@@ -19,7 +19,8 @@ class DestinationPanel extends Component {
         locationInfo: {
           name,
           description,
-          price
+          airport,
+          urls
         }
       }
     } = this.props.uiStore;
@@ -39,31 +40,34 @@ class DestinationPanel extends Component {
               <p className="paragraph">{description}</p>
             </div>
             </div>
-            <div className="travel">
+            {airport && <div className="travel">
               <h1 className="heading-2">Travel</h1>
               <div className="flight-container">
               <div id="widget-holder"></div>
                   <Helmet>
                   <script data-affilid="sinergisewidget" data-from="Ljubljana" 
-                  data-to="London" data-departure="2019-05-17" data-width="100%" data-apigee-key="27W4h6f0VrTIAscCqAFIALTdlIzk7BY4" data-results-only="true" src="https://widget.kiwi.com/scripts/widget-search-iframe.js"></script>
+                  data-to={airport} data-departure="2019-05-17" data-width="100%"
+                  data-apigee-key="27W4h6f0VrTIAscCqAFIALTdlIzk7BY4" data-results-only="true"
+                  src="https://widget.kiwi.com/scripts/widget-search-iframe.js"></script>
                   </Helmet>
               </div>
-            </div>
-            <div className="Insight">
+            </div>}
+            {urls  && urls.length > 0 && <div className="Insight">
               <h1 className="heading-2">Insight</h1>
               <div className="gif-container"></div>
-              <div className="columns w-row" ><img src="https://raw.githubusercontent.com/AleksMat/kiwi-hackaton2019/master/data/Sentinel-2_L1C-timelapse-etna.gif" className="hero-gif" />
+              <div className="columns w-row" >
+               <img src={urls[0]} className="hero-gif" />
                 <table>
                   <tbody>
                     <tr>
-                      <th><img src="https://raw.githubusercontent.com/AleksMat/kiwi-hackaton2019/master/data/api-volcano-from-space-aerial-nasa.jpg" className="hero-img"/></th>
-                      <th><img src="https://raw.githubusercontent.com/AleksMat/kiwi-hackaton2019/master/data/etna2.jpg" className="hero-img"/></th>
-                      <th><img src="https://raw.githubusercontent.com/AleksMat/kiwi-hackaton2019/master/data/mt-etna-sicily-italy-volcano-from-space-aerial-nasa.jpg" className="hero-img"/></th>
+                      {urls.length >= 2 &&<th><img src={urls[1]} className="hero-img"/></th>}
+                      {urls.length >= 3 &&<th><img src={urls[2]} className="hero-img"/></th>}
+                      {urls.length >= 4 &&<th><img src={urls[3]} className="hero-img"/></th>}
                     </tr>
                     </tbody>
                 </table>
               </div>
-            </div>
+            </div>}
         </div>
       </div>
     );

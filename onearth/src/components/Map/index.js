@@ -19,7 +19,7 @@ class Map extends Component {
     super(props);
 
     this.minOverlayZoom = 10;
-    this.selectZoomLevel = 15;
+    this.selectZoomLevel = 13;
 
     this.mainMap = null;
     this.overlayMap = null;
@@ -115,7 +115,9 @@ class Map extends Component {
   
     this.setOverlayMap();
   
-    this.mainMap.on('moveend', _.throttle(() => {}), 4000);
+    this.mainMap.on('moveend', _.throttle(() => {
+      this.zoomChanged();
+    }), 4000);
     this.mainMap.on('resize', () => {});
     this.mainMap.on('zoomend', () => {
       this.zoomChanged();
