@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import { observer, inject } from 'mobx-react';
-import s from 'styled-components';
-import { debounce } from 'lodash';
+import {Helmet} from "react-helmet"
 
 import './destination.css';
 
@@ -16,8 +14,8 @@ class DestinationPanel extends Component {
 
   render() {
     const {
+      locationSelected,
       state: {
-        locationSelected,
         locationInfo: {
           name,
           description,
@@ -26,7 +24,12 @@ class DestinationPanel extends Component {
       }
     } = this.props.uiStore;
 
+    if (! locationSelected){
+      return null
+    }
+
     return (
+      <div className="destinationPanel" >
       <div className="destinationWrap">
           <div className="section-2">
             <h1 className="heading-2">Location: {name}
@@ -38,7 +41,13 @@ class DestinationPanel extends Component {
             </div>
             <div className="travel">
               <h1 className="heading-2">Travel</h1>
-              <div className="flight-container"></div>
+              <div className="flight-container">
+              <div id="widget-holder"></div>
+                  <Helmet>
+                  <script data-affilid="sinergisewidget" data-from="Ljubljana" 
+                  data-to="London" data-departure="2019-05-17" data-width="100%" data-apigee-key="27W4h6f0VrTIAscCqAFIALTdlIzk7BY4" data-results-only="true" src="https://widget.kiwi.com/scripts/widget-search-iframe.js"></script>
+                  </Helmet>
+              </div>
             </div>
             <div className="Insight">
               <h1 className="heading-2">Insight</h1>
@@ -56,6 +65,7 @@ class DestinationPanel extends Component {
               </div>
             </div>
         </div>
+      </div>
     );
   }
 }

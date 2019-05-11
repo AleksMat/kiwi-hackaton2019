@@ -75,7 +75,7 @@ class Map extends Component {
     this.locationMarkers = [];
     var myIcon = new L.Icon({
       iconUrl: 'https://gkv.com/wp-content/uploads/leaflet-maps-marker-icons/map_marker-red-small.png',
-      iconAnchor: [16, 37]
+      iconAnchor: [20, 37]
     })
     this.props.uiStore.state.locations.forEach(location => {
       let marker = L.marker([location.lat, location.lng], {icon: myIcon})
@@ -129,9 +129,13 @@ class Map extends Component {
       })
       .addTo(this.mainMap);
     
-    this.mainMap.setView([this.lat, this.lng], this.zoom);
+    this.mainMap.setView([this.lat, this.lng], 3);
 
-    this.setLocations();
+    setTimeout(()=> {
+      this.mainMap.invalidateSize();
+      this.zoomChanged();
+    },500);
+
   }
 
   render() {

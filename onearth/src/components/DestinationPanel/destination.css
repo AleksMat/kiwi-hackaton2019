@@ -1,3 +1,8 @@
+.destinationPanel {
+	overflow-y: scroll;
+	overflow-x: hidden;
+	width: 700px;
+}
 
 .destinationWrap {
     background: rgb(255, 255, 255);
@@ -106,4 +111,10 @@ gif-container {
 	width: 380px;
 	object-fit: cover;
 	object-position: center center;
+}
+
+#widget-holder {
+	height: 300px;
+	padding-bottom: 10px;
+	overflow: hidden;
 }
