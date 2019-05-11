@@ -17,8 +17,8 @@ def read_destinations():
                 dest.append({
                     'name': line[0],
                     'id': idx,
-                    'lat': float(line[1].replace('"', "")),
-                    'lng': float(line[2].replace('"', ""))
+                    'lng': float(line[1].replace('"', "")),
+                    'lat': float(line[2].replace('"', ""))
                 })
             except UnicodeDecodeError:
                 pass
@@ -51,7 +51,7 @@ def get_destiantion_info(id):
     return {
         **destinations[id],
         'price': get_flight_price(lat, lng),
-        'airport': get_closest_airport(lat, lng)
+        # 'airport': get_closest_airport(lat, lng)
     }
 
 

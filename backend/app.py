@@ -4,6 +4,7 @@ Main module where service is implemented
 
 from flask import Flask, request
 from flask_restplus import Resource, Api
+from flask_cors import CORS
 
 
 # from utils import get_flask_schema, recursive_camelize
@@ -28,6 +29,7 @@ api = Api(
     doc='/docs'
 )
 
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 RESPONSES = {
     200: 'Success',
@@ -68,6 +70,7 @@ class DescriptionProvider(Resource):
         """
         payload = get_destiantion_info(int(location_id))
 
+        print(payload)
         return payload, 200
 
 
