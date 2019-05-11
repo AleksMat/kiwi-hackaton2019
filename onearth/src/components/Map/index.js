@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { observable, reaction } from 'mobx';
 import L from 'leaflet';
-// import 'leaflet/dist/leaflet.css';
+import 'leaflet/dist/leaflet.css';
 import _ from 'lodash';
 
 import './map.css';
@@ -11,16 +11,82 @@ import './map.css';
 @inject('uiStore')
 @observer
 class Map extends Component {
-  @observable lat = 45;
-  @observable lng = 13;
+  @observable lat = 30;
+  @observable lng = 0;
   @observable zoom = 0;
 
   constructor(props) {
     super(props);
 
+    this.minOverlayZoom = 5;
+
+    this.mainMap = null;
+    this.overlayMap = null;
+    this.locationMarkers = [];
+
   }
 
+  setOverlayMap = () => {
+
+    this.overlayMap = L.tileLayer.wms('http://services.sentinel-hub.com/ogc/wms/f660b35a-140b-4592-aa0a-6c16fe6cc0ac', {
+      layers: 'TRUE-COLOR-S2-L1C',
+      maxcc: '100',
+      showlogo: 'false',
+      time: '2019-01-01/2019-06-01',
+      priority: 'leastCC',
+      tileSize: 512,
+      minZoom: this.minOverlayZoom,
+      maxZoom: 20
+    });
+
+    this.mapControls = L.control.layers(null, {'Sentinel-2': this.overlayMap}).addTo(this.mainMap);
+
+  };
+
+
+  setLocations = () => {
+    // collect locations
+
+    this.locationMarkers = [];
+    var myIcon = new L.Icon({
+      iconUrl: 'https://gkv.com/wp-content/uploads/leaflet-maps-marker-icons/map_marker-red-small.png',
+    })
+    this.props.uiStore.state.locations.forEach(location => {
+      this.locationMarkers.push(L.marker([location.lat, location.lng], {icon: myIcon}).addTo(this.mainMap))
+    });
+  }
+
+
+  componentDidMount() {
+    const carto = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution:
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    });
   
+    this.mainMap = L.map('map', {
+      minZoom: 3,
+      layers: [carto],
+      maxZoom: 17,
+      zoomControl: false, // this disables classical zoom buttons
+    });
+  
+    this.setOverlayMap();
+  
+    this.mainMap.on('moveend', _.throttle(() => {}), 4000);
+    this.mainMap.on('resize', () => {});
+    
+    L.control
+      .scale({
+        updateWhenIdle: true,
+        imperial: false,
+        position: 'bottomright',
+      })
+      .addTo(this.mainMap);
+    
+    this.mainMap.setView([this.lat, this.lng], this.zoom);
+
+    this.setLocations();
+  }
 
   render() {
     

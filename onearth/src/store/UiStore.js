@@ -15,7 +15,9 @@ class UiStore {
     };
 
     this.state = {
-      destinationSelected: false,
+      locationSelected: false,
+      locationInfo: {},
+      locations: [{'lat': 45, 'lng': 20}]
     };
   }
 
