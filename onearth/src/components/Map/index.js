@@ -18,12 +18,32 @@ class Map extends Component {
   constructor(props) {
     super(props);
 
-    this.minOverlayZoom = 5;
+    this.minOverlayZoom = 10;
 
     this.mainMap = null;
     this.overlayMap = null;
     this.locationMarkers = [];
 
+    reaction(
+      () => this.props.uiStore.state.locationsUpdated,
+      () => {
+        if (this.props.uiStore.state.locationsUpdated) {
+          this.setLocations();
+        }
+      },
+    );
+  }
+
+  zoomChanged = () => {
+    var zoom = this.mainMap.getZoom();
+    if (zoom >= this.minOverlayZoom) {
+      this.overlayMap.addTo(this.mainMap);
+    } else {
+      this.mainMap.removeLayer(this.overlayMap)
+    }
+
+    this.props.uiStore.state.zoomLevel = zoom;
+    this.props.uiStore.updateLocations(this.mainMap.getBounds());
   }
 
   setOverlayMap = () => {
@@ -45,7 +65,13 @@ class Map extends Component {
 
 
   setLocations = () => {
-    // collect locations
+    console.log('setting locations!')
+
+    if (this.locationMarkers) {
+      this.locationMarkers.forEach(marker => {
+        this.mainMap.removeLayer(marker);
+      })
+    }
 
     this.locationMarkers = [];
     var myIcon = new L.Icon({
@@ -54,6 +80,8 @@ class Map extends Component {
     this.props.uiStore.state.locations.forEach(location => {
       this.locationMarkers.push(L.marker([location.lat, location.lng], {icon: myIcon}).addTo(this.mainMap))
     });
+
+    this.props.uiStore.state.locationsUpdated = false;
   }
 
 
@@ -74,6 +102,9 @@ class Map extends Component {
   
     this.mainMap.on('moveend', _.throttle(() => {}), 4000);
     this.mainMap.on('resize', () => {});
+    this.mainMap.on('zoomend', () => {
+      this.zoomChanged();
+    });
     
     L.control
       .scale({
@@ -89,7 +120,12 @@ class Map extends Component {
   }
 
   render() {
-    
+    const {
+      state: {
+        locations
+      }
+    } = this.props.uiStore;
+
     return (
       <div id="mapWrap">
         <div id="map" />

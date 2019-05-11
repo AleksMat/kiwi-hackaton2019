@@ -1,8 +1,8 @@
 
 .destinationWrap {
-    background: rgb(172, 57, 57);
+    background: rgb(255, 255, 255);
     width: 400px;
-    color: #fff;
+    color: #000;
     overflow: hidden;
     padding: 0px;
   }
