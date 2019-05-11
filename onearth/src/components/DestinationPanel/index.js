@@ -13,7 +13,7 @@ class DestinationPanel extends Component {
     super(props);
   }
 
-  
+
   render() {
     const {
       state: {
@@ -56,7 +56,7 @@ class DestinationPanel extends Component {
               </tr>
             </tbody>
           </table>
-        </div> 
+        </div>
     );
   }
 }
