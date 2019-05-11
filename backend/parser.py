@@ -105,4 +105,3 @@ def get_closest_airport(lat, lon, single_location=True):
 
 
 destinations = read_destinations()
-print(destinations)
