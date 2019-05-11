@@ -5,20 +5,25 @@ MAX_DESTIONATIONS = 10
 
 def read_destinations():
     dest = []
-    with open("Locations-top vacation location - Locations-top vacation location.csv", "rb") as csvfile:
+    with open("Locations-top vacation location - Locations-top vacation location.tsv", "rb") as tsvfile:
 
-        next(csvfile)
-        for idx, line in enumerate(csvfile):
+        next(tsvfile)
+        for idx, line in enumerate(tsvfile):
             if len(line) < 10:
                 continue
             try:
-                line = line.decode("utf-8").replace("\r\n", "").split(",")
-                line[-3] = line[-3].replace('"', "")
+                line = line.decode("utf-8").replace("\r\n", "").split('\t')
+                name = line[0]
+                coordinates = line[1].split(",")
+                images = line[2:-1]
+                description = line[-1]
                 dest.append({
-                    'name': line[0],
+                    'name': name,
                     'id': idx,
-                    'lng': float(line[1].replace('"', "")),
-                    'lat': float(line[2].replace('"', ""))
+                    'lng': float(coordinates[0]),
+                    'lat': float(coordinates[1]),
+                    'images': images,
+                    'description': description
                 })
             except UnicodeDecodeError:
                 pass
@@ -100,3 +105,4 @@ def get_closest_airport(lat, lon, single_location=True):
 
 
 destinations = read_destinations()
+print(destinations)
