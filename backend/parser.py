@@ -47,7 +47,12 @@ def get_destinations(lat1, lng1, lat2, lng2):
 
 
 def get_destiantion_info(id):
-    return destinations[id]
+    lat, lng = destinations[id]['lat'], destinations[id]['lng']
+    return {
+        **destinations[id],
+        'price': get_flight_price(lat, lng),
+        'airport': get_closest_airport(lat, lng)
+    }
 
 
 # print(get_destinations(4.5,52,5,53))
