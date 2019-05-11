@@ -1,32 +1,53 @@
 import requests
 
-destinations = {}
-with open("Locations-top vacation location - Locations-top vacation location.csv", "rb") as csvfile:
-
-    next(csvfile)
-    for line in csvfile:
-        if len(line)<10:
-            continue
-        try:
-            line = line.decode("utf-8").replace("\r\n", "").split(",")
-            line[-3] = line[-3].replace('"', "")
-            destinations[line[0]] = [float(line[1].replace('"',"")), float(line[2].replace('"',""))]
-        except UnicodeDecodeError:
-            pass
-        except ValueError:
-            pass
+MAX_DESTIONATIONS = 10
 
 
-def get_destinations(lat1, log1, lat2, log2):
-    matching = destinations.copy()
-    for name in destinations:
-        if not (lat1 < destinations[name][0] and destinations[name][0] < lat2 and log1 < destinations[name][1] and destinations[name][1] < log2):
-            matching.pop(name)
+def read_destinations():
+    dest = []
+    with open("Locations-top vacation location - Locations-top vacation location.csv", "rb") as csvfile:
+
+        next(csvfile)
+        for idx, line in enumerate(csvfile):
+            if len(line) < 10:
+                continue
+            try:
+                line = line.decode("utf-8").replace("\r\n", "").split(",")
+                line[-3] = line[-3].replace('"', "")
+                dest.append({
+                    'name': line[0],
+                    'id': idx,
+                    'lat': float(line[1].replace('"', "")),
+                    'lng': float(line[2].replace('"', ""))
+                })
+            except UnicodeDecodeError:
+                pass
+            except ValueError:
+                pass
+
+    return dest
+
+
+def get_destinations(lat1, lng1, lat2, lng2):
+    matching = []
+
+    for dest in destinations:
+        if lat1 < dest['lat'] < lat2 and lng1 < dest['lng'] < lng2:
+
+            d = {}
+            for key in ['id', 'lat', 'lng', 'name']:
+                d[key] = dest[key]
+
+            matching.append(d)
+
+        if len(matching) >= MAX_DESTIONATIONS:
+            break
+
     return matching
 
 
 def get_destiantion_info(id):
-    return destinations[id][-1]
+    return destinations[id]
 
 
 # print(get_destinations(4.5,52,5,53))
@@ -64,3 +85,6 @@ def get_closest_airport(lat, lon):
         headers=headers,
     )
     return response.json()["locations"][0]["id"]
+
+
+destinations = read_destinations()

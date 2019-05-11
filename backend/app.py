@@ -39,23 +39,29 @@ RESPONSES = {
 @api.route('/locations')
 @api.doc(responses=RESPONSES)
 class LocationsProvider(Resource):
-
+    """
+    curl "http://127.0.0.1:5000/locations?lat1=0.0&lng1=0.0&lat2=30.0&lng2=40.0"
+    """
     @api.response(200, 'Success')
     def get(self):
         """ Provides all locations in given area
         """
-        args = self.args
-        print(args)
+        lat1, lat2 = float(request.args['lat1']), float(request.args['lat2'])
+        lng1, lng2 = float(request.args['lng1']), float(request.args['lng2'])
+        lat1, lat2 = min(lat1, lat2), max(lat1, lat2)
+        lng1, lng2 = min(lng1, lng2), max(lng1, lng2)
 
-        # payload = get_destinations(lat1, log1, lat2, log2)
+        payload = get_destinations(lat1, lng1, lat2, lng2)
 
-        # return payload, 200
+        return payload, 200
 
 
-@api.route('/locations/<string:{}>')
+@api.route('/locations/<string:location_id>')
 @api.doc(responses=RESPONSES)
 class DescriptionProvider(Resource):
-
+    """
+    curl "http://127.0.0.1:5000/locations/1"
+    """
     @api.response(200, 'Success')
     def get(self, location_id):
         """ Obtain info about a location
