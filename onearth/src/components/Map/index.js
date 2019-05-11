@@ -64,7 +64,6 @@ class Map extends Component {
 
   };
 
-
   setLocations = () => {
 
     if (this.locationMarkers) {
@@ -76,6 +75,7 @@ class Map extends Component {
     this.locationMarkers = [];
     var myIcon = new L.Icon({
       iconUrl: 'https://gkv.com/wp-content/uploads/leaflet-maps-marker-icons/map_marker-red-small.png',
+      iconAnchor: [16, 37]
     })
     this.props.uiStore.state.locations.forEach(location => {
       let marker = L.marker([location.lat, location.lng], {icon: myIcon})
