@@ -67,19 +67,23 @@ locations_url = "https://kiwicom-prod.apigee.net/locations/radius"
 
 def get_flight_price(lat=0, lon=0):
     if lat != 0 and lon != 0:
-        start = get_closest_airport(lat, lon)
+        airports = get_closest_airport(lat, lon, False)
     else:
-        start = "LJU"
-    parameters = {"fly_from": start, "fly_to": "TNR"}
-    response = requests.get(
-        kiwi_url,
-        params=parameters,
-        headers=headers,
-    )
-    return response.json()["data"][0]["price"]
+        airports = {"id": "LJU"}
 
+    for start in airports:
+        start = start["id"]
+        parameters = {"fly_from": start, "fly_to": "TNR"}
+        response = requests.get(
+            kiwi_url,
+            params=parameters,
+            headers=headers,
+        )
+        if len(response.json()["data"]) > 0:
+            return response.json()["data"][0]["price"]
+    return 999
 
-def get_closest_airport(lat, lon):
+def get_closest_airport(lat, lon, single_location=True):
     parameters = {
         "lat": lat, "lon": lon,
         "location_types": "airport"
@@ -89,7 +93,10 @@ def get_closest_airport(lat, lon):
         params=parameters,
         headers=headers,
     )
-    return response.json()["locations"][0]["id"]
+    if single_location:
+        return response.json()["locations"][0]["id"]
+    else:
+        return response.json()["locations"]
 
 
 destinations = read_destinations()
