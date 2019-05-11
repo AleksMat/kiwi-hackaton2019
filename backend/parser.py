@@ -16,14 +16,17 @@ def read_destinations():
                 line = line.decode("utf-8").replace("\r\n", "").strip().split('\t')
                 name = line[0]
                 coordinates = line[1].split(",")
-
+                urls = line[2: -1]
                 description = line[-1]
+                if description.startswith("http"):
+                    description = "Currently unavailable"
+                    urls = line[2:]
                 dest.append({
                     'name': name,
                     'id': idx,
                     'lng': float(coordinates[0]),
                     'lat': float(coordinates[1]),
-                    'urls': line[2: -1],
+                    'urls': urls,
                     'description': description
                 })
                 if idx < 5:
