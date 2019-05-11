@@ -15,16 +15,22 @@ def read_destinations():
                 line = line.decode("utf-8").replace("\r\n", "").split('\t')
                 name = line[0]
                 coordinates = line[1].split(",")
-                images = line[2:-1]
+                gif_url = line[2]
+                images = line[3:-1]
                 description = line[-1]
                 dest.append({
                     'name': name,
                     'id': idx,
                     'lng': float(coordinates[0]),
                     'lat': float(coordinates[1]),
+                    'gif': gif_url,
                     'images': images,
                     'description': description
                 })
+                if idx < 5:
+                    lng = dest[-1]["lng"]
+                    dest[-1]["lng"] = dest[-1]["lat"]
+                    dest[-1]["lat"] = lng
             except UnicodeDecodeError:
                 pass
             except ValueError:
@@ -53,6 +59,7 @@ def get_destinations(lat1, lng1, lat2, lng2):
 
 def get_destiantion_info(id):
     lat, lng = destinations[id]['lat'], destinations[id]['lng']
+    print(lat, lng)
     return {
         **destinations[id],
         'price': get_flight_price(lat, lng),
@@ -63,7 +70,6 @@ def get_destiantion_info(id):
 # print(get_destinations(4.5,52,5,53))
 
 kiwi_url = "https://kiwicom-prod.apigee.net/v2/search"
-
 
 headers = {"apikey": "SsdTNP2YqAg5Xk89VKgAbBEk1zC8sOAN"}
 
