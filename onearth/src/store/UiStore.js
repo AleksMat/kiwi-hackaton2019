@@ -5,8 +5,11 @@ import axios from 'axios';
 class UiStore {
   @observable state;
   @observable task;
+  @observable locationSelected;
 
   constructor() {
+    this.locationSelected = false;
+    
     this.initStore();
 
     this.backendService = new axios.create({
@@ -21,7 +24,6 @@ class UiStore {
 
     this.state = {
       zoomLevel: null,
-      locationSelected: false,
       locationInfo: {
         name: 'Test destination',
         description: 'Something about destination',
@@ -48,12 +50,11 @@ class UiStore {
 
   async selectLocation(id) {
     console.log('wtf?')
-    this.state.locationSelected = true;
     let { data } = await this.backendService.get(`/locations/${id}`);
 
     this.state.locationInfo = data
-    this.state.locationSelected = true;
-    console.log(this.state.locationSelected)
+    this.locationSelected = true;
+    console.log(this.locationSelected)
   }
 
 }
