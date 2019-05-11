@@ -40,17 +40,20 @@ class UiStore {
 
     let { data } = await this.backendService.get(`/locations?lat1=${sw.lat}&lng1=${sw.lng}&lat2=${ne.lat}&lng2=${ne.lng}`)
 
-    console.log(data)
     this.state.locations = data
 
     this.state.locationsUpdated = true
   }
 
-  @action
+
   async selectLocation(id) {
+    console.log('wtf?')
+    this.state.locationSelected = true;
     let { data } = await this.backendService.get(`/locations/${id}`);
 
     this.state.locationInfo = data
+    this.state.locationSelected = true;
+    console.log(this.state.locationSelected)
   }
 
 }

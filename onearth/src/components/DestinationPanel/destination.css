@@ -1,18 +1,19 @@
 
 .destinationWrap {
     background: rgb(255, 255, 255);
-    width: 400px;
+    width: 530px;
     color: #000;
     overflow: hidden;
-    padding: 0px;
+    padding: 20px;
   }
 
   .section-2 {
 	width: 380px;
+  padding-bottom: 10px;
 }
 
 .heading-2 {
-padding-right: 8px;
+  padding-right: 8px;
 	padding-left: 8px;
 	font-family: Montserrat, sans-serif;
 	color: #666;
@@ -84,8 +85,10 @@ gif-container {
 }
 
 .container-description {
-	margin-left: 16px;
-	margin-right: 16px;
+	margin-top: 6px;
+	margin-bottom: 6px;
+	margin-left: 14px;
+	margin-right: 14px;
 	background-color: #f2efec;
 	border-radius: 4px;
 }

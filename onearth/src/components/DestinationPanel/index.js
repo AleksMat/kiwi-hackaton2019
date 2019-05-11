@@ -29,10 +29,11 @@ class DestinationPanel extends Component {
     return (
       <div className="destinationWrap">
           <div className="section-2">
-            <h1 className="heading-2">Location</h1>
+            <h1 className="heading-2">Location: {name}
+            </h1>
             <div className="container-description">
               <h2 className="heading-3">Description</h2>
-              <p className="paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
+              <p className="paragraph">{description}</p>
             </div>
             </div>
             <div className="travel">

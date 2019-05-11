@@ -18,7 +18,7 @@ class App extends Component {
                 <Header/>
                 <div className="horizontalWrap">
                   <Map/>
-                  <DestinationPanel/>
+                  <DestinationPanel />
                 </div>
           </div>
         </div>
