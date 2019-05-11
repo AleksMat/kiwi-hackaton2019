@@ -1,5 +1,6 @@
 import { observable, action, computed } from 'mobx';
 import _ from 'lodash';
+import axios from 'axios';
 
 class UiStore {
   @observable state;
@@ -7,6 +8,10 @@ class UiStore {
 
   constructor() {
     this.initStore();
+
+    this.backendService = new axios.create({
+      baseURL: 'http://localhost:5000',
+    });
   }
 
   @action
@@ -29,20 +34,23 @@ class UiStore {
   }
 
   @action
-  updateLocations(bounds) {
-    let se = bounds.getSouthWest()
-    let nw = bounds.getNorthEast()
+  async updateLocations(bounds) {
+    let sw = bounds.getSouthWest()
+    let ne = bounds.getNorthEast()
 
-    console.log(se.lat, se.lng, nw.lat, nw.lng)
-    // TODO: call service
-    this.state.locations.push({lat: -45, lng: 13, id: 3})
+    let { data } = await this.backendService.get(`/locations?lat1=${sw.lat}&lng1=${sw.lng}&lat2=${ne.lat}&lng2=${ne.lng}`)
+
+    console.log(data)
+    this.state.locations = data
 
     this.state.locationsUpdated = true
   }
 
   @action
-  selectLocation(id) {
-    console.log(id, '!!!')
+  async selectLocation(id) {
+    let { data } = await this.backendService.get(`/locations/${id}`);
+
+    this.state.locationInfo = data
   }
 
 }
