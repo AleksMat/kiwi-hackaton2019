@@ -19,6 +19,7 @@ class Map extends Component {
     super(props);
 
     this.minOverlayZoom = 10;
+    this.selectZoomLevel = 15;
 
     this.mainMap = null;
     this.overlayMap = null;
@@ -65,7 +66,6 @@ class Map extends Component {
 
 
   setLocations = () => {
-    console.log('setting locations!')
 
     if (this.locationMarkers) {
       this.locationMarkers.forEach(marker => {
@@ -78,12 +78,27 @@ class Map extends Component {
       iconUrl: 'https://gkv.com/wp-content/uploads/leaflet-maps-marker-icons/map_marker-red-small.png',
     })
     this.props.uiStore.state.locations.forEach(location => {
-      this.locationMarkers.push(L.marker([location.lat, location.lng], {icon: myIcon}).addTo(this.mainMap))
+      let marker = L.marker([location.lat, location.lng], {icon: myIcon})
+
+      marker.addTo(this.mainMap).on('click', this.markerClicked)
+
+      this.locationMarkers.push(marker)
     });
 
     this.props.uiStore.state.locationsUpdated = false;
   }
 
+  markerClicked = (e) => {
+    let latlng = e.latlng;
+
+    this.props.uiStore.state.locations.forEach(location => {
+      if (latlng.lat === location.lat && latlng.lng === location.lng) {
+        this.props.uiStore.selectLocation(location.id);
+        this.mainMap.setView([location.lat, location.lng], this.selectZoomLevel);
+        return
+      }
+    })
+  }
 
   componentDidMount() {
     const carto = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {

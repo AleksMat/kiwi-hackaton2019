@@ -40,5 +40,10 @@ class UiStore {
     this.state.locationsUpdated = true
   }
 
+  @action
+  selectLocation(id) {
+    console.log(id, '!!!')
+  }
+
 }
 export default UiStore;
