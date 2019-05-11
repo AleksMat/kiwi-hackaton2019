@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { observer, inject } from 'mobx-react';
+import { AppRegistry, View } from 'react-native';
 import s from 'styled-components';
 import { debounce } from 'lodash';
 
@@ -11,12 +12,12 @@ class DestinationPanel extends Component {
     super(props);
   }
 
-  
+
   render() {
     return (
       <div className="destinationWrap">
-         
-      </div> 
+
+      </div>
     );
   }
 }
