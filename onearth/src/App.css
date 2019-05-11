@@ -25,7 +25,7 @@ a {
   height: 100%;
 }
 .horizontalWrap {
-  height: calc(100vh - 45px);
+  height: calc(100vh - 60px);
   overflow: auto;
   position: relative;
   display: flex;

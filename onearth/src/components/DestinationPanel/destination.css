@@ -2,10 +2,10 @@
 	overflow-y: scroll;
 	overflow-x: hidden;
 	width: 700px;
+	background: #cccccc;
 }
 
 .destinationWrap {
-    background: rgb(255, 255, 255);
     width: 530px;
     color: #000;
     overflow: hidden;

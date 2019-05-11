@@ -11,7 +11,7 @@ class Header extends Component {
 
     return (
       <div className="mainAppHeader">
-        <h3 style={{ paddingLeft: '20px' }}>onEarth</h3>
+        <img src="./onEarth-Logo@2x.png" className="logoImg"/>
       </div>
     );
   }

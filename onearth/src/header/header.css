@@ -1,6 +1,6 @@
 .mainAppHeader {
-  background: #333;
-  height: 45px;
+  background: #cccccc;
+  height: 60px;
   color: #fff;
   overflow: hidden;
   padding: 1px;
@@ -43,4 +43,9 @@
 
 .app-version {
   font-size: 12px;
+}
+
+.logoImg {
+  padding-left: 20px;
+  padding-top: 5px;
 }
